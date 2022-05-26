@@ -4,10 +4,6 @@
 <div class="container">
 
     <h2>Student List</h2>
-    {{-- <form action="#" method="GET">
-    <input name="search" class="search-input" type="text" placeholder="Brand Name" aria-label="Search">
-    <button style="background-color:rgb(39, 166, 168);" type="submit"><i class='fas fa-search'></i></button>
-    </form> --}}
     <hr>
 
     <a class="btn btn-info" style="margin-bottom: 5px;" href="{{route('students.create')}}">Add New</a>
@@ -32,7 +28,7 @@
                         </td>
                         <td>{{$student->name}}</td>
                         <td>
-                            {{$results}}
+                            {{$student->result->sum('achieve_number')}}
                         </td>
                         <td>
                                 <a class="btn btn-sm btn-success" href="{{route('students.show',$student->id)}}">View</a>

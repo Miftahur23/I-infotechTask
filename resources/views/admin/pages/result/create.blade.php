@@ -41,20 +41,7 @@
                 </div>
                   {{-- @dd($subjects) --}}
                 <div class="row field_wrapper" style="display: flex;">
-                  {{-- <div class="col-4">
-                    <select id="subject" name="subject_id" class="form-control">
-                      @foreach ($subjects as $subject)
-                            <option value="{{$subject->id}}">{{$subject->subject_name}}</option>   
-                      @endforeach
-                  </select>
-                  </div>
-                  <div class="col-4">
-                        <input type="text" name="number" value=""/>
-                      </div>
-
-                      <div class="col-4">
-                        <a href="" class="btn btn-danger">Remove</a>
-                      </div> --}}
+                  
               </div>
             <button type="submit" class="btn btn-success" style="margin-top: 2%;">Submit</button>
         </form>
