@@ -28,19 +28,19 @@
                     <tr>
                     <th scope="row">{{$key+1}}</th>
                         <td> 
-                            <img src="{{url('/uploads/student/'.$student->image)}}" width="100px" alt="Image">
+                            <img src="{{url('/uploads/students/'.$student->image)}}" width="100px" alt="Image">
                         </td>
                         <td>{{$student->name}}</td>
-                        <td></td>
+                        <td>
+                            {{$results}}
+                        </td>
                         <td>
                                 <a class="btn btn-sm btn-success" href="{{route('students.show',$student->id)}}">View</a>
                                 <a class="btn btn-sm btn-warning" href="{{route('students.edit',$student->id)}}">Edit</a>
                                 <form action="{{ route('students.destroy', $student->id)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                        <div>
                                             <button class="btn btn-sm btn-danger">Delete</button>
-                                        </div>
                                 </form>
                         </td> 
                             
@@ -49,10 +49,10 @@
             @endforeach
             
         </table>
-        
     </div>
-
-    
+    {{$students->links('pagination::bootstrap-5')}}
 </div>
+
+
 
 @endsection

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id');
             $table->foreignId('subject_id');
-            $table->foreignId('achieve_number');
+            $table->string('image');
+            $table->integer('achieve_number');
             $table->timestamps();
         });
     }

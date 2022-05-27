@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
 
 /*
@@ -20,11 +21,23 @@ use App\Http\Controllers\StudentController;
 // });
 
 
-Route::view('/', 'welcome')->name('welcome');
+
 Route::view('/login', 'loginpage')->name('loginpage');
 
 Route::post('users/logging_in', [UserController::class, 'doLogin'])->name('login');
-Route::get('users/logging_out', [UserController::class, 'doLogout'])->name('logout');
 
-Route::resource('students', StudentController::class);
+
+Route::group(['middleware'=>'auth'],function(){
+
+    Route::view('/', 'welcome')->name('welcome');
+
+    Route::get('users/logging_out', [UserController::class, 'doLogout'])->name('logout');
+
+    Route::resource('students', StudentController::class);
+    Route::resource('results', ResultController::class);
+    
+});
+
+
+
 
