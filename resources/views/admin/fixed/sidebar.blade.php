@@ -6,11 +6,6 @@
                     <div class="sb-nav-link-icon"><i class=""></i></div>
                     Students
                 </a>
-
-                <a class="nav-link" href="{{route('results.create')}}">
-                    <div class="sb-nav-link-icon"><i class=""></i></div>
-                    Result Entry
-                </a>
             </div>
         </div>
     </nav>

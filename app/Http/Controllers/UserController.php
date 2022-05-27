@@ -14,7 +14,7 @@ class UserController extends Controller
 
         if(Auth::attempt($admin))
         {
-            return redirect()->route('welcome');
+            return redirect()->route('students.index');
         }
         else
         return redirect()->back()->withErrors('Invalid user credentials');
