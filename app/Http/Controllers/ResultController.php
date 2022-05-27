@@ -59,15 +59,8 @@ class ResultController extends Controller
                 'achieve_number'=>$result,
             ]);
         }
-
-        // Student_result::create([
-        //     "student_id"=>$request->student_id,
-        //     "image"=>$request->student_image,
-        //     "subject_id"=>$subjects,
-        //     "achieve"=>$subjects,
-        // ]);
         
-        return redirect()->back();
+        return redirect()->route('students.index');
         
     }
 

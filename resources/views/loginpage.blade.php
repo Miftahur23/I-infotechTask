@@ -1,5 +1,4 @@
 <link href="{{url('/css/style.css')}}" rel="stylesheet" />
-<!------ Include the above in your HEAD tag ---------->
 
 <div class="container" style="width: 500px; margin-top: 200px;">
     

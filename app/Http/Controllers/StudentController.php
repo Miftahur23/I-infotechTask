@@ -15,17 +15,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $group=Student_result::select('student_id','achieve_number')->groupBy('student_id','achieve_number')->get();
-        dd($group);
-        $students=Student::paginate(10);
-        $student_id=Student::all()->pluck('id');
-        dd($student_id);
-        foreach($student_id as $data)
-        {
-            $results=Student_result::select('achieve_number')->where('student_id',$data)->sum('achieve_number');
-        }
-        //dd($results);
-        return view ('admin.pages.student.index',compact('students','results'));
+        $students=Student::with('result')->paginate(10);
+        //dd($students);
+        return view ('admin.pages.student.index',compact('students'));
     }
 
     /**
@@ -129,6 +121,7 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $students=Student::find($id)->delete();
+        $result=Student_result::where('student_id',$id)->delete();
         return redirect()->back();
     }
 }
