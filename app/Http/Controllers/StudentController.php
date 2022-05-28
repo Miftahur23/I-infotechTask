@@ -17,15 +17,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $results=Student_result::all();
         $students=Student::with('result')->paginate(10);
-
-        // $sub=Student_result::all()->pluck('subject_id');
-        // $num=Student_result::all()->pluck('achieve_number');
-        // $merge=array_combine($sub,$num);
-        // dd($merge);
-
-        return view ('admin.pages.student.index',compact('students','results'));
+        return view ('admin.pages.student.index',compact('students'));
     }
 
     /**

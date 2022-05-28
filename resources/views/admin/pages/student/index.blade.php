@@ -5,23 +5,7 @@
     <p class="alert alert-success">{{session()->get('message')}}</p>
 @endif
 
-<!-- Modal To Show Result -->
-<div class="modal fade" id="ResultView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-   <div class="modal-content">
-    @foreach ($students as $keyy=>$student)
-        <div class="modal-body">{{$keyy+1}}</div>
-            <div class="modal-header">
-                <img src="{{url('/uploads/students/'.$student->image)}}" alt="Image">
-            </div>
-            <div class="modal-body">Name: {{$student->name}}</div>
-            <div class="modal-body">Subject</div>
-            <div class="modal-body">Individual number</div>
-            <div class="modal-body">Total Number: {{$student->result->sum('achieve_number')}}</div>
-    @endforeach
-   </div>
-</div>
-</div>
+
 
 
 <div class="container">
@@ -51,9 +35,26 @@
                             </td>
                             <td style="display: flex; border-bottom-width: 0px;">
                                     <!-- Button trigger modal -->
-                                    <a type="button" id="{{$key}}" class="btn btn-success btn-sm" style="margin-top: 5px; margin-right:4px;" data-bs-toggle="modal" data-bs-target="#ResultView">
+                                    <button type="button" class="btn btn-success btn-sm" style="margin-top: 5px; margin-right:4px;" data-bs-toggle="modal" data-bs-target="#modal{{$key}}">
                                         View
-                                    </a>                                
+                                    </button>   
+                                    <!-- Modal To Show Result -->
+                                    <div class="modal fade" id="modal{{$key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <img src="{{url('/uploads/students/'.$student->image)}}" alt="Image">
+                                                    </div>
+                                                    <div class="modal-body">Name: {{$student->name}}</div>
+                                                    <div class="modal-body">Subject
+                                                        @foreach($student->result as $data)
+                                                            <p>{{$data->subject->subject_name}} {{$data->achieve_number}}</p>
+                                                        @endforeach
+                                                    </div>
+                                                    <div class="modal-body">Total Number: {{$student->result->sum('achieve_number')}}</div>
+                                                </div>
+                                        </div>
+                                    </div>                             
                                     <a class="btn btn-sm btn-warning" style="margin-top: 5px; margin-right:4px;" href="{{route('students.edit',$student->id)}}">Edit</a>
                                     <form action="{{ route('students.destroy', $student->id)}}" method="POST">
                                         @csrf
