@@ -1,24 +1,27 @@
 @extends('welcome')
 @section('content')
 
-<div class="container" style="width:80%; margin:10%; text-align:center;">
+<div class="container" style="width:80%; margin-top:5%;">
     <h2>Update Student Information</h2>
         <hr>
         <img src="{{url('/uploads/students/'.$students->image)}}">
-        <form action="#" method="POST" enctype="multipart/form-data">
+        
+        <form action="{{route('students.update',$students->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
-                <div class="form-group">
+            @method('PUT')
+
+                <div style="display: flex; justify-content:space-between;">
+                  <div class="form-group mt-2">
                     <label for="exampleInputname"> <b>Name:</b></label>
-                    <select id="student" name="student_id" class="form-control">
-                     
-                            <option value="{{$students->id}}">{{$students->name}}</option>   
-                     
-                  </select>
+                    <input type="text" name="name" class="form-control mt-2" id="name" value="{{$students->name}}">
+                  </div>
+
+                  <div class="form-group mt-2">
+                          <label for="student_image"> <b>Picture:</b> </label>
+                          <input type="file" name="student_image" class="form-control mt-2" id="student_image">
+                  </div> 
                 </div>
-                <div class="form-group mt-2">
-                        <label for="student_image"> <b>Picture:</b> </label>
-                        <input type="file" name="student_image" required type="file" class="form-control mt-2" id="result_entry_image">
-                </div>
+                
 
                 <div style="margin-top: 20px;">
                     <table class="table">
