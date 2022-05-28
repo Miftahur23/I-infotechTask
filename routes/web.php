@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
 
 /*
@@ -34,7 +33,6 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('users/logging_out', [UserController::class, 'doLogout'])->name('logout');
 
     Route::resource('students', StudentController::class);
-    Route::resource('results', ResultController::class);
     
 });
 

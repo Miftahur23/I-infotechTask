@@ -38,7 +38,24 @@ class ResultController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        //dd($request->all());
+        $request->validate([
+            'name'=>'required',
+            'student_image'=>'required|mimes:jpeg,png,jpg,gif,svg|dimensions:width=100,height=100',
+            'subject_id'=>'required',
+            'number'=>'required',
+        ],
+
+        [
+            'name.required'=>'Please insert student name',
+            'student_image.required'=>'Image size must be 100x100',
+            'subject_id.required'=>'Please insert subject name',
+            'number.required'=>'Please insert marks'
+        ]
+    
+    );
+
         //dd($request->all());
         $subjects=$request->subject_id;
         //dd($subjects);
@@ -50,16 +67,30 @@ class ResultController extends Controller
         $results=array_combine($subjects,$numbers);
         //dd($results);
 
+        $image_name=null;
+        if($request->hasfile('student_image'))
+        {
+            $image_name=date('Ymdhis').'.'.$request->file('student_image')->getClientOriginalExtension();
+            // dd($image_name);
+            $request->file('student_image')->storeAs('/uploads/students',$image_name);
+        }
+
+        $student=Student::create([
+            'name'=>$request->name,
+            'image'=>$image_name
+        ]);
+        //dd($student);
+
+        $match=Student::where('name',$request->name)->first();
+
         foreach($results as $key=>$result)
         {
             Student_result::insert([
-                'student_id'=>$request->student_id,
+                'student_id'=>$match->id,
                 'subject_id'=>$key,
-                'image'=>'image',
                 'achieve_number'=>$result,
             ]);
         }
-        
         return redirect()->route('students.index');
         
     }
@@ -83,7 +114,7 @@ class ResultController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -95,7 +126,7 @@ class ResultController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**

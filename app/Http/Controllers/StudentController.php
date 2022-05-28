@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\Student_result;
+use App\Http\Requests\ResultRequest;
 
 class StudentController extends Controller
 {
@@ -15,9 +17,10 @@ class StudentController extends Controller
      */
     public function index()
     {
+        $results=Student_result::all();
         $students=Student::with('result')->paginate(10);
         //dd($students);
-        return view ('admin.pages.student.index',compact('students'));
+        return view ('admin.pages.student.index',compact('students','results'));
     }
 
     /**
@@ -27,7 +30,9 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view ('admin.pages.student.create');
+        $subjects=Subject::all();
+        $students=Student::all();
+        return view('admin.pages.student.create',compact('subjects','students'));
     }
 
     /**
@@ -38,23 +43,60 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+        $request->validate([
+            'name'=>'required',
+            'student_image'=>'required|mimes:jpeg,png,jpg,gif,svg|dimensions:width=100,height=100',
+            'subject_id'=>'required',
+            'number'=>'required',
+        ],
 
-       
+        [
+            'name.required'=>'Please insert student name',
+            'student_image.required'=>'Image size must be 100x100',
+            'subject_id.required'=>'Please insert subject name',
+            'number.required'=>'Please insert marks'
+        ]
+    
+    );
+
+        //dd($request->all());
+        $subjects=$request->subject_id;
+        //dd($subjects);
+
+        $numbers=$request->number;
+        //dd($numbers);
+
+        //dd($subjects ,$numbers);
+        $results=array_combine($subjects,$numbers);
+        //dd($results);
+
         $image_name=null;
         if($request->hasfile('student_image'))
         {
             $image_name=date('Ymdhis').'.'.$request->file('student_image')->getClientOriginalExtension();
             // dd($image_name);
             $request->file('student_image')->storeAs('/uploads/students',$image_name);
-    
         }
 
-        Student::create([
-            'name'=>$request->student_name,
-            'image'=>$image_name,
-           ]);
+        $student=Student::create([
+            'name'=>$request->name,
+            'image'=>$image_name
+        ]);
+        //dd($student);
 
-           return redirect()->route('students.index');
+        $match=Student::where('name',$request->name)->first();
+
+        foreach($results as $key=>$result)
+        {
+            Student_result::insert([
+                'student_id'=>$match->id,
+                'subject_id'=>$key,
+                'achieve_number'=>$result,
+            ]);
+        }
+        return redirect()->route('students.index');
+        
     }
 
     /**
@@ -78,8 +120,10 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        $subjects=Subject::all();
         $students=Student::find($id);
-        return view('admin.pages.student.edit',compact('students'));
+        //dd($students);
+        return view('admin.pages.student.edit',compact('students','subjects'));
     }
 
     /**
