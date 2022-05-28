@@ -15,16 +15,9 @@ use App\Http\Controllers\StudentController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('loginpage');
-// });
-
-
-
 Route::view('/login', 'loginpage')->name('loginpage');
 
 Route::post('users/logging_in', [UserController::class, 'doLogin'])->name('login');
-
 
 Route::group(['middleware'=>'auth'],function(){
 

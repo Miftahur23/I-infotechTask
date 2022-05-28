@@ -5,9 +5,6 @@
     <p class="alert alert-success">{{session()->get('message')}}</p>
 @endif
 
-
-
-
 <div class="container">
     <h2>Student List</h2>   
     <a  class="btn btn-info" href="{{route('students.create')}}">Add New</a>
@@ -45,13 +42,24 @@
                                                     <div class="modal-header">
                                                         <img src="{{url('/uploads/students/'.$student->image)}}" alt="Image">
                                                     </div>
-                                                    <div class="modal-body">Name: {{$student->name}}</div>
-                                                    <div class="modal-body">Subject
-                                                        @foreach($student->result as $data)
-                                                            <p>{{$data->subject->subject_name}} {{$data->achieve_number}}</p>
-                                                        @endforeach
+                                                    <div class="modal-body"><strong>Name:</strong>  {{$student->name}}</div>
+                                                    <div class="modal-body"><strong>Subjects:</strong>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <th>Name</th>
+                                                                <th>Number</th>
+                                                            </thead>
+
+                                                            @foreach($student->result as $data)
+                                                            <tbody>
+                                                                <td>{{$data->subject->subject_name}}</td>
+                                                                <td>{{$data->achieve_number}}</td>
+                                                            </tbody>
+                                                            @endforeach
+                                                        </table>
+                                                        
                                                     </div>
-                                                    <div class="modal-body">Total Number: {{$student->result->sum('achieve_number')}}</div>
+                                                    <div class="modal-body"><strong>Total Number:</strong> {{$student->result->sum('achieve_number')}}</div>
                                                 </div>
                                         </div>
                                     </div>                             
