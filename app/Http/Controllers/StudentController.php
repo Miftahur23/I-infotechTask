@@ -107,9 +107,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $students=Student::find($id);
-        return view ('admin.pages.student.show',compact('students'));
-
+        //dd('show');
     }
 
     /**
@@ -135,8 +133,20 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request->all());
         $students=Student::find($id);
         //dd($students);
+
+        $subjects=$request->subject_id;
+        //dd($subjects);
+
+        $numbers=$request->number;
+        //dd($numbers);
+
+        //dd($subjects ,$numbers);
+        $results=array_combine($subjects,$numbers);
+        //dd($results);
+        
 
         $image_name=$students->image;
         //              step 1: check image exist in this request.
@@ -149,9 +159,21 @@ class StudentController extends Controller
         }
 
         $students->update([
-            'name'=>$request->student_name,
+            'name'=>$request->name,
             'image'=>$image_name,
         ]);
+
+        $match=Student::where('name',$request->name)->pluck('id');
+        $res_match=Student_result::where('student_id',$match)->first();
+        //dd($res_match);
+        
+        foreach($results as $key=>$result)
+        {
+            $res_match->update([
+                'subject_id'=>$key,
+                'achieve_number'=>$result,
+            ]);
+        }
 
         return redirect()->route('students.index');
     }

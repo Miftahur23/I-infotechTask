@@ -1,11 +1,29 @@
 @extends('welcome')
 @section('content')
 
+<!-- Modal o Show Result -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    
+   <div class="modal-content">
+    @foreach ($students as $student)
+            <div class="modal-header">
+                <img src="{{url('/uploads/students/'.$student->image)}}" alt="Image">
+            </div>
+        <div class="modal-body">{{$student->name}}</div>
+        <div class="modal-body">Subject</div>
+        <div class="modal-body">Number</div>
+        <div class="modal-body">Total Number</div>
+    @endforeach
+   </div>
+</div>
+</div>
+
+
 <div class="container">
     <h2>Student List</h2>   
-
     <a  class="btn btn-info" href="{{route('students.create')}}">Add New</a>
-
         <table class="table">
                 <thead>
                     <tr>
@@ -44,13 +62,8 @@
                     </tr>
                 </tbody>
             @endforeach
-            
         </table>
     </div>
-
     {{$students->links('pagination::bootstrap-5')}}
 </div>
-
-
-
 @endsection
