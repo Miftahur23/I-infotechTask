@@ -19,7 +19,12 @@ class StudentController extends Controller
     {
         $results=Student_result::all();
         $students=Student::with('result')->paginate(10);
-        //dd($students);
+
+        // $sub=Student_result::all()->pluck('subject_id');
+        // $num=Student_result::all()->pluck('achieve_number');
+        // $merge=array_combine($sub,$num);
+        // dd($merge);
+
         return view ('admin.pages.student.index',compact('students','results'));
     }
 
@@ -53,7 +58,7 @@ class StudentController extends Controller
 
         [
             'name.required'=>'Please insert student name',
-            'student_image.required'=>'Image size must be 100x100',
+            'student_image.dimensions'=>'Image size must be 100x100',
             'subject_id.required'=>'Please insert subject name',
             'number.required'=>'Please insert marks'
         ]
@@ -95,7 +100,7 @@ class StudentController extends Controller
                 'achieve_number'=>$result,
             ]);
         }
-        return redirect()->route('students.index');
+        return redirect()->route('students.index')->with('message','Result Entered Successfully');
         
     }
 
@@ -118,8 +123,8 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        $students=Student::with('result')->find($id);
         $subjects=Subject::all();
-        $students=Student::find($id);
         //dd($students);
         return view('admin.pages.student.edit',compact('students','subjects'));
     }
@@ -149,13 +154,11 @@ class StudentController extends Controller
         
 
         $image_name=$students->image;
-        //              step 1: check image exist in this request.
         if($request->hasfile('student_image'))
         {
             $image_name=date('Ymdhis').'.'.$request->file('student_image')->getClientOriginalExtension();
             // dd($image_name);
             $request->file('student_image')->storeAs('/uploads/students',$image_name);
-    
         }
 
         $students->update([
@@ -164,18 +167,24 @@ class StudentController extends Controller
         ]);
 
         $match=Student::where('name',$request->name)->pluck('id');
-        $res_match=Student_result::where('student_id',$match)->first();
+        $res_match=Student_result::where('student_id',$match)->get();
         //dd($res_match);
         
+        foreach($res_match as $data)
+        {
+            $data->delete();
+        }
+
         foreach($results as $key=>$result)
         {
-            $res_match->update([
+            Student_result::insert([
+                'student_id'=>$students->id,
                 'subject_id'=>$key,
                 'achieve_number'=>$result,
             ]);
         }
 
-        return redirect()->route('students.index');
+        return redirect()->route('students.index')->with('message','Student Updated Successfully');
     }
 
     /**
@@ -188,6 +197,6 @@ class StudentController extends Controller
     {
         $students=Student::find($id)->delete();
         $result=Student_result::where('student_id',$id)->delete();
-        return redirect()->back();
+        return redirect()->back()->with('message','Student Information Deleted Successfully');
     }
 }

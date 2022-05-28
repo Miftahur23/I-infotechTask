@@ -1,5 +1,9 @@
 <link href="{{url('/css/style.css')}}" rel="stylesheet" />
 
+@if (session()->has('message'))
+    <p class="alert alert-success">{{session()->get('message')}}</p>
+@endif
+
 <div class="container" style="width: 500px; margin-top: 200px;">
     
                         <form  class="form" action="{{route('login')}}" method="post">

@@ -21,31 +21,45 @@
                           <input type="file" name="student_image" class="form-control mt-2" id="student_image">
                   </div> 
                 </div>
-                
-
-                <div style="margin-top: 20px;">
-                    <table class="table">
-                        <thead>
-                          <tr>
-                            <th class="col-4"><h5>Subject</h5></th>
-                            <th class="col-4"><h5>Number</h5></th>
-                            <th class="col">
-                              <a href="javascript:void(0);" class="add_button btn btn-info"  title="Add field">Add More</a>
-                 
-                   
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            
-                          </tr>
-                        </tbody>
-                      </table>
-                </div>
+                    <div style="margin-top: 20px;">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="col-4"><h5>Subject</h5></th>
+                                <th class="col-4"><h5>Number</h5></th>
+                                <th class="col">
+                                  <a href="javascript:void(0);" class="add_button btn btn-info"  title="Add field">Add More</a>
+                    
+                      
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
                   {{-- @dd($subjects) --}}
                 <div class="row field_wrapper" style="display: flex;">
-                  
+                  @foreach($students->result as $result)
+                    <div class="siam row d-flex">
+                        <div class="col-4">
+                            <select id="subject" name="subject_id[]" class="form-control">
+                                @foreach ($subjects as $subject)
+                                    <option @if($result->subject_id==$subject->id) selected @endif value="{{$subject->id}}">{{$subject->subject_name}}</option>
+                                @endforeach</select>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="number[]" class="form-control" placeholder="Enter Number" value="{{$result->achieve_number}}"/>
+                        </div>
+                        <div class="col-4">
+                            <a href="javascript:void(0);" class="remove_button btn btn-danger">Remove</a>
+                        </div>
+                        <hr class="row" style="height:1px; margin-left:0.5rem; margin-top: 1rem;">
+                    </div>
+                    @endforeach
               </div>
             <button type="submit" class="btn btn-success" style="margin-top: 2%;">Submit</button>
         </form>

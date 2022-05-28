@@ -14,7 +14,7 @@ class UserController extends Controller
 
         if(Auth::attempt($admin))
         {
-            return redirect()->route('students.index');
+            return redirect()->route('students.index')->with('message','Logged in successfully');
         }
         else
         return redirect()->back()->withErrors('Invalid user credentials');
@@ -24,6 +24,6 @@ class UserController extends Controller
     public function doLogout()
     {
         Auth::logout();
-        return redirect()->route('loginpage');
+        return redirect()->route('loginpage')->with('message','Logged out successfully');
     }
 }
